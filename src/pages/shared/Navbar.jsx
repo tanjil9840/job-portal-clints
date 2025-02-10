@@ -1,11 +1,25 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useContext } from 'react';
+import { Link, NavLink } from 'react-router-dom';
+import AuthContext from '../../context/AuthContext/AuthContext';
+import logo from '../../assets/Jobs-logo.png'
 
 const Navbar = () => {
+    const {user,signOutUser}=useContext(AuthContext)
+    const handleSignOut=()=>{
+        signOutUser()
+        .then(()=>{
+            console.log("successfull signOut")
+        })
+        .catch(error=>{
+            console.log('filed to signOut , plese check')
+        })
+    }
     const links = <>
-    <li> <a> Item 1 </a> </li>
-    <li> <a> Item 1 </a> </li>
-    <li> <a> Item 1 </a> </li>
+    <li>  <NavLink to= '/' > Home </NavLink> </li>
+    <li>  <NavLink to= '/' > Home </NavLink> </li>
+    <li>  <NavLink to= '/' > Home </NavLink> </li>
+    <li>  <NavLink to= '/' > Home </NavLink> </li>
+    
 
     </>
     return (
@@ -17,12 +31,15 @@ const Navbar = () => {
                     </div>
                     <ul
                         tabIndex={0}
-                        class="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow">
+                        className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow">
                         {links}
 
                     </ul>
                 </div>
-                <a className="btn btn-ghost text-xl">daisyUI</a>
+                <a className="btn btn-ghost text-xl"> 
+                    <img className='w-12' src={ logo} alt="" />
+                    <h3 className='text-3xl' >Job-portal</h3>
+                      </a>
             </div>
             <div className="navbar-center hidden lg:flex">
                 <ul className="menu menu-horizontal px-1">
@@ -34,8 +51,13 @@ const Navbar = () => {
                 </ul>
             </div>
             <div className="navbar-end">
-                <Link to='/register' > Register</Link>
-                <a className="btn">Sign In</a>
+                {
+                    user ? <> <button onClick={handleSignOut} className='btn' >LogOut</button></>: <> 
+                    
+                    <Link to='/register' > Register</Link>
+                 <Link to="/signIn"> <button className='btn' >SignIn</button>  </Link> </>
+                }
+               
             </div>
         </div>
     );
